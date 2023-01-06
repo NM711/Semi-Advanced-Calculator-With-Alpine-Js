@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/output.css">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <title>Semi Complex Calculator</title>
+</head>
+<body class="bg-jet">
+   <div class="grid grid-cols-4" x-data="{inputClick: false}">
+    <section class="col-span-4">
+        <div class="mx-auto">
+            <header class="text-center text-5xl text-white bg-gray-500 p-5">
+                <h1>Calculator</h1>
+            </header>
+        </div>
+    </section>
+
+    <section id="expressionPrompt" class="col-span-4">
+        <div x-data="{
+        expression: '', result: 0,
+        operatorArr: ['+', '-', '*', '/'],
+        squareRoot: 0
+    }"
+ class="bg-gray-100 md:w-1/3 w-10/12 md:h-60 h-72 mx-auto my-36 text-center flex flex-col justify-center items-center rounded-md">
+            <h1 class="text-center text-2xl my-3">Result:</h1>
+            <!--<h1 class="text-center text-xl my-3" x-text="expression"></h1>-->
+            <h1 id="display" x-text="result" class="text-center text-xl my-3"></h1>
+            <input x-model="expression" x-on:click="inputClick = true" @keydown.enter="
+             if (operatorArr.some(operator => expression.includes(operator))) {
+                result = eval(expression);
+                console.log(expression)
+                console.log(result)
+                expression = ''
+              } else {
+                alert('error you forgot to include a operator')
+                expression = '';
+                console.warn('error you forgot to include a operator')
+              }"
+            x-on:blur="inputClick = false" x-bind:class="{'shadow-2xl': inputClick}" type="text" 
+            placeholder="Enter Problem Here" class="rounded-md p-3 border border-black">
+        <div id="buttonContainer" class="my-5">
+            <button x-on:click="squareRoot = Math.sqrt(result), console.log(squareRoot), result = squareRoot" id="squareRoot" class="text-2xl border border-black p-2 rounded-md hover:bg-opacity-25 hover:bg-slate-500 duration-150 ease-in-out">√</button>
+            <button x-on:click="expression += Math.PI, console.log(Math.PI)" id="piSymbol" class="text-2xl border border-black p-2 rounded-md hover:bg-opacity-25 hover:bg-slate-500 duration-150 ease-in-out">𝝅</button>
+            <button x-on:click="expression += '**'" id="exponent"  class="text-2xl border border-black p-2 rounded-md hover:bg-opacity-25 hover:bg-slate-500 duration-150 ease-in-out">x^2</button>
+            <button x-on:click="expression += Math.E, console.log(Math.E)" id="eulers" class="text-2xl border border-black p-2 rounded-md hover:bg-opacity-25 hover:bg-slate-500 duration-150 ease-in-out">e</button>
+            <button x-on:click="expression = '', result = 0, console.log('cleared')" id="clear" class="text-2xl border border-black p-2 rounded-md hover:bg-opacity-25 hover:bg-slate-500 duration-150 ease-in-out">C</button>
+        </div>
+        </div>
+        <!--Add more complex operators example square root, percentages, fractions, etc-->
+    </section>
+   </div>
+</body>
+</html>
